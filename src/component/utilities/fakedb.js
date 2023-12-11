@@ -1,30 +1,27 @@
+// get the stored data from local storage
 
-
-const addToDb = (title) => {
-    let blogsValue;
-    // get the blogs value from local storage
-    const storedBlogs = localStorage.getItem('blogs');
-    if (storedBlogs) {
-        blogsValue = JSON.parse(storedBlogs);
-
-        const quantity = blogsValue[title]
-        if (quantity) {
-            const newQuantity = quantity + 1;
-            blogsValue[title] = newQuantity;
-        }
-        else {
-            blogsValue[title] = 1;
-        }
+const getStoreBlog = ()=>{
+    const storedBlogString = localStorage.getItem('blogs');
+    if(storedBlogString){
+        return JSON.parse(storedBlogString);
     }
-    else {
-        blogsValue = {};
-    }
-
-
-    localStorage.setItem('blogs', JSON.stringify(blogsValue))
-    return blogsValue;
+    return [];
 }
 
 
+// save data to the localStorage 
+//don't need to export it
+const saveToLS = (blogs)=>{
+    const stringifiedData = JSON.stringify(blogs);
+    localStorage.setItem('blogs',stringifiedData);
+}
 
-export { addToDb }
+// add new item to the local storage
+
+const addToLS = (blog)=>{
+    const blogs = getStoreBlog();
+    blogs.push(blog);
+    saveToLS(blogs)
+}
+
+export {getStoreBlog,addToLS}

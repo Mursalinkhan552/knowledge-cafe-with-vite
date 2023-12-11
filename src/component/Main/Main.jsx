@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Cart from '../Cart/Cart';
 import SideCart from '../SideCart/SideCart';
 import { ToastContainer, toast } from 'react-toastify';
-import { addToDb } from '../utilities/fakedb';
+import { addToLS, getStoreBlog } from '../utilities/fakedb';
 
 
 const Main = () => {
@@ -14,22 +14,9 @@ const Main = () => {
 
     const handleBlogs = (value) => {   
         
-        const allValuesFromDB = addToDb(value);
-        setBlogs[allValuesFromDB]
+        setBlogs([...blogs,value]);
+        addToLS(value);
    
-        // const previousValue = localStorage.getItem('blogs');
-        // if (previousValue) {
-        //     const current = [previousValue, value] ;
-        //     const ls = JSON.stringify(current)
-        //     localStorage.setItem('blogs',ls);
-        //     setBlogs(current);
-        // }
-        // else {
-        //     const newValue = ([...blogs, value]);
-        //     localStorage.setItem('blogs',newValue);
-        //     setBlogs(newValue);
-        // }
-
     }
 
     const handleWatchTime = (time) => {
@@ -45,6 +32,11 @@ const Main = () => {
             setWatchTime(time);
         }
     }
+
+    useEffect(()=>{
+        const storedBlog = getStoreBlog();
+        setBlogs(storedBlog)
+      },[])
 
     useEffect(() => {
         fetch('value.json')

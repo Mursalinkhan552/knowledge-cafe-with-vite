@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { addToDb } from '../utilities/fakedb';
+import { getStoreBlog } from '../utilities/fakedb';
 
 const Cart = (props) => {
     
@@ -8,15 +8,25 @@ const Cart = (props) => {
     const [bookState, setBookState] = useState(true);
 
 
-    const handleButton = (titleName) => {
+    const handleButton = () => {
+        // console.log(titleName)
         // setBookState(false);
         // toast("Already Exit!")
         // props.handleBlogs(title)
         // addToDb(titleName)
-    props.handleBlogs(titleName)
+        
+    // props.handleBlogs(titleName)
+    props.handleBlogs(title);
 
 
     }
+    useEffect(()=>{
+        const LSblogs = getStoreBlog();
+        if (LSblogs.includes(title)) {
+            setBookState(false)
+        }
+
+    },[])
 
 
     return (
@@ -37,7 +47,7 @@ const Cart = (props) => {
 
                         <div className='flex items-center'>
                             <p className='text-xl font-semibold opacity-70'>{reading_time} min read</p>
-                            <button disabled={!bookState} onClick={()=>handleButton(title)} className='ms-8 cursor-pointer text-primary'>
+                            <button disabled={!bookState} onClick={()=>handleButton()} className='ms-8 cursor-pointer text-primary'>
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75h1.5m9 0h-9" />
